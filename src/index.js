@@ -1,1 +1,6 @@
-console.log('hey world!')
+import '@/styles/global.scss'
+const object = {
+    user:{
+        admin:''
+          }
+}
