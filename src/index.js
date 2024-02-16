@@ -1,7 +1,5 @@
 import '@/styles/global.scss'
 
-const object = {
-	user: {
-		admin: ''
-	}
-}
+import { Router } from './core/router'
+
+new Router()
