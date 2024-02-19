@@ -24,7 +24,7 @@ export class Router {
 
 			if (target) {
 				//по умолчанию отключаем переход на другую страницу
-				event.presentDefault()
+				event.preventDefault()
 				//вешаем свою навигацию
 				this.navigate(target.href)
 			}
