@@ -1,5 +1,5 @@
 import '@/styles/global.scss'
 
-import { Router } from './core/router'
+import { Router } from './core/router/router'
 
 new Router()
