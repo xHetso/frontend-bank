@@ -8,11 +8,38 @@ export class Router {
 	#layout = null
 
 	constructor() {
+		//popstate событие которое возникает отлавливает кнопку назад кнопку вперед
+		window.addEventListener('popstate', () => {
+			this.#handleRouteChange()
+		})
+
 		this.#handleRouteChange(this.#routes)
+		this.#handleLinks()
+	}
+
+	#handleLinks() {
+		document.addEventListener('click', event => {
+			//находим ближайший элемент а
+			const target = event.target.closest('a')
+
+			if (target) {
+				//по умолчанию отключаем переход на другую страницу
+				event.presentDefault()
+				//вешаем свою навигацию
+				this.navigate(target.href)
+			}
+		})
 	}
 
 	getCurrentPath() {
 		return window.location.pathname
+	}
+
+	navigate(path) {
+		if (path !== this.getCurrentPath()) {
+			window.history.pushState({}, '', path)
+			this.#handleRouteChange()
+		}
 	}
 
 	#handleRouteChange() {
@@ -29,7 +56,6 @@ export class Router {
 	}
 	#render() {
 		const component = new this.#currentRoute.component()
-		console.log(this.#layout)
 		if (!this.#layout) {
 			this.#layout = new Layout({
 				router: this,
