@@ -13,7 +13,9 @@ class RenderService {
 
 		const element = template.content.firstChild
 
-		// styles
+		if (styles) {
+			this.#applyModuleStyles(styles, element)
+		}
 
 		this.#replaceComponentTags(element, components)
 
@@ -68,7 +70,41 @@ class RenderService {
 			}
 		}
 	}
-	// #applyModuleStyles
+	/**
+	 * @param {Object} moduleStyles
+	 * @param {string} element
+	 * @returns {void}
+	 */
+	// Определение метода applyModuleStyles с двумя аргументами: moduleStyles и element
+	#applyModuleStyles(moduleStyles, element) {
+		// Проверка, существует ли элемент, если нет - выход из функции
+		if (!element) return
+
+		// Функция для применения стилей к элементу
+		const applyStyles = element => {
+			// Перебор всех стилей из moduleStyles
+			for (const [key, value] of Object.entries(moduleStyles)) {
+				// Проверка, содержит ли класс элемента ключ из moduleStyles
+				if (element.classList.contains(key)) {
+					// Удаление класса, соответствующего ключу
+					element.classList.remove(key)
+					// Добавление нового класса, соответствующего значению
+					element.classList.add(value)
+				}
+			}
+		}
+
+		// Проверка, есть ли у элемента атрибут 'class'
+		if (element.getAttribute('class')) {
+			// Применение стилей к самому элементу
+			applyStyles(element)
+		}
+
+		// Получение всех дочерних элементов
+		const elements = element.querySelectorAll('*')
+		// Применение стилей ко всем дочерним элементам
+		elements.forEach(applyStyles)
+	}
 }
 
 export default new RenderService()
