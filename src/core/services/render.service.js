@@ -33,39 +33,39 @@ class RenderService {
 
 		// Перебор всех элементов
 		for (const element of allElements) {
-				// Получение имени тега текущего элемента в нижнем регистре
-				const elementTagName = element.tagName.toLowerCase()
-				// Проверка, соответствует ли имя тега регулярному выражению componentTagPattern
-				if (componentTagPattern.test(elementTagName)) {
-						// Удаление 'component-' из имени тега и замена всех дефисов на пустую строку
-						const componentName = elementTagName
-								.replace(componentTagPattern, '')
-								.replace(/-/g, '')
+			// Получение имени тега текущего элемента в нижнем регистре
+			const elementTagName = element.tagName.toLowerCase()
+			// Проверка, соответствует ли имя тега регулярному выражению componentTagPattern
+			if (componentTagPattern.test(elementTagName)) {
+				// Удаление 'component-' из имени тега и замена всех дефисов на пустую строку
+				const componentName = elementTagName
+					.replace(componentTagPattern, '')
+					.replace(/-/g, '')
 
-						// Поиск компонента в массиве components, имя которого соответствует обработанному имени тега
-						const foundComponent = components.find(Component => {
-								// Создание экземпляра Component или использование существующего, если он является экземпляром ChildComponent
-								const instance =
-										Component instanceof ChildComponent ? Component : new Component()
+				// Поиск компонента в массиве components, имя которого соответствует обработанному имени тега
+				const foundComponent = components.find(Component => {
+					// Создание экземпляра Component или использование существующего, если он является экземпляром ChildComponent
+					const instance =
+						Component instanceof ChildComponent ? Component : new Component()
 
-								// Сравнение имени конструктора экземпляра с обработанным именем тега
-								return instance.constructor.name.toLowerCase() === componentName
-						})
+					// Сравнение имени конструктора экземпляра с обработанным именем тега
+					return instance.constructor.name.toLowerCase() === componentName
+				})
 
-						if (foundComponent) {
-								// Получение содержимого компонента с использованием метода render
-								const componentContent =
-										foundComponent instanceof ChildComponent
-												? foundComponent.render()
-												: new foundComponent().render()
-								// Замена текущего элемента содержимым компонента
-								element.replaceWith(componentContent)
-						} else {
-								console.error(
-										`Component "${componentName}" not found in the provided components array.`
-								)
-						}
+				if (foundComponent) {
+					// Получение содержимого компонента с использованием метода render
+					const componentContent =
+						foundComponent instanceof ChildComponent
+							? foundComponent.render()
+							: new foundComponent().render()
+					// Замена текущего элемента содержимым компонента
+					element.replaceWith(componentContent)
+				} else {
+					console.error(
+						`Component "${componentName}" not found in the provided components array.`
+					)
 				}
+			}
 		}
 	}
 	// #applyModuleStyles
